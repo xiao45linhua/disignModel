@@ -15,18 +15,24 @@ import java.util.Iterator;
 public class GroupChatServer {
     //定义属性
     private Selector selector;
+    //定义一个channel
     private ServerSocketChannel listenChannel;
+    //定义一个端口
     private static final int PORT = 6667;
 
     //构造器
     //初始化工作
     public GroupChatServer() {
         try {
+            //打开选择
             selector = Selector.open();
+            //打开serversocketChannel
             listenChannel =  ServerSocketChannel.open();
+            //绑定端口
             listenChannel.socket().bind(new InetSocketAddress(PORT));
             //设置非阻塞模式
             listenChannel.configureBlocking(false);
+            //先组成一个监听链接事件
             listenChannel.register(selector, SelectionKey.OP_ACCEPT);
         }catch (IOException e) {
             e.printStackTrace();
@@ -40,10 +46,11 @@ public class GroupChatServer {
             while (true) {
                 int count = selector.select();
                 if(count > 0) {//有事件处理
+                    //select是一个数组，需要用迭代器去遍历
                     Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                     while (iterator.hasNext()) {
                         SelectionKey key = iterator.next();
-                        //监听到accept
+                        //监听到accept事件，就要监听可读事件，一个新的socketChannel,在accept之后
                         if(key.isAcceptable()) {
                             SocketChannel sc = listenChannel.accept();
                             sc.configureBlocking(false);
@@ -62,6 +69,7 @@ public class GroupChatServer {
         }catch (Exception e) {
             e.printStackTrace();
         }finally {
+
         }
     }
 
