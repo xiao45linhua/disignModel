@@ -1,12 +1,19 @@
 package com.linhua.study.bean;
 
+import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+
+/**
+ * AnnotationAwareAspectJAutoProxyCreator
+ *
+ */
 
 /**
  * @author linhua
@@ -28,7 +35,10 @@ public class Car implements InitializingBean, DisposableBean {
     }
 
 
-
+    /**
+      AnnotationAwareAspectJAutoProxyCreator
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
 
