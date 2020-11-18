@@ -33,6 +33,9 @@ public class BioServer {
         }
 
     }
+//每个请求都需要创建独立的线程，与对应的客户端进行数据Read，业务处理，数据Write 。
+//当并发数较大时，需要创建大量线程来处理连接，系统资源占用较大。
+//连接建立后，如果当前线程暂时没有数据可读，则线程就阻塞在Read 操作上，造成线程资源浪费
 
     public static void handler(Socket socket){
         try {
