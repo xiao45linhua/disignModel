@@ -23,6 +23,7 @@ public class LengthOfLongestSubstring {
             if (map.containsKey(tmp)){
                 start = Math.max(map.get(tmp),start);
             }
+
         }
         return null;
     }

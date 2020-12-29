@@ -2,7 +2,7 @@ package com.linhua.study.leetcode;
 
 
 public class SumTwoNumberDemo {
-
+    //假如是按大小顺序放入链表，也一样可以参考这个思路
     public static Node sumTwoNumber(Node na,Node nb) {
         Node head = new Node(0);
         Node curr = head;
@@ -24,6 +24,7 @@ public class SumTwoNumberDemo {
         }
         return head;
     }
+
 
     public static void main(String[] args){
     }

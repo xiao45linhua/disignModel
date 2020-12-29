@@ -1,5 +1,6 @@
 package com.linhua.study.markwork;
 
+import com.linhua.study.bean.Person;
 import org.openjdk.jol.info.ClassLayout;
 
 /**
@@ -16,7 +17,7 @@ public class MarkWordTest {
     实例数据：共8字节，定义的 Person 有两个属性，str 和 son，他们对应的类型分别为 String 和 Son，这两个属性每个占4个字节
     对齐填充：共4个字节，前三个部分所占大小相加 8+ 4+ 8 = 20，不是8的整数倍，所以得填充4个字节凑齐24字节。描述信息中也有说明： loss due to the next object aligment
 */
-
+    private Person person = new Person();
     private byte str;
     private int i;
     public static void main(String[] args) throws InterruptedException {
@@ -29,7 +30,7 @@ public class MarkWordTest {
 //            System.out.println(ClassLayout.parseInstance(person).toPrintable());
 //        }
         Thread.sleep(5000);
-        Object o = new Object();
+        MarkWordTest o = new MarkWordTest();
         synchronized (o) {
             System.out.println(ClassLayout.parseInstance(o).toPrintable());
         }
@@ -42,7 +43,7 @@ public class MarkWordTest {
         }
 
     }
-    public static void print(Object o) {
+    public static void print(MarkWordTest o) {
         synchronized (o) {
             System.out.println(ClassLayout.parseInstance(o).toPrintable());
         }
