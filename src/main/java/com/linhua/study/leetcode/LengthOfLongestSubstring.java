@@ -27,7 +27,7 @@ public class LengthOfLongestSubstring {
         }
         return null;
     }
-
+    //最长不重复子序列
     public static int lengthOfLongestSubstring(String s) {
         int n = s.length(), ans = 0;
         Map<Character, Integer> map = new HashMap<>();

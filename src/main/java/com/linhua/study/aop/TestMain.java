@@ -1,7 +1,5 @@
 package com.linhua.study.aop;
 
-import com.linhua.study.config.BeanConfig;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**

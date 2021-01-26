@@ -95,7 +95,31 @@
                 <artifactId>httpcore-nio</artifactId>
                 <version>4.4.13</version>
             </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>ons-client</artifactId>
+                <version>1.8.4.Final</version>
+            </dependency>
 
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>1.3.2</version>
+            </dependency>
+
+<!--            &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-registry-nacos &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo-registry-nacos</artifactId>-->
+<!--                <version>2.7.7</version>-->
+<!--            </dependency>-->
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-dubbo -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-dubbo</artifactId>
+                <version>2.2.1.RELEASE</version>
+            </dependency>
 
         </dependencies>
 

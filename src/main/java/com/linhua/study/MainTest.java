@@ -1,16 +1,11 @@
 package com.linhua.study;
 
-import com.linhua.study.bean.Car;
-import com.linhua.study.bean.Person;
-import com.linhua.study.config.BeanConfig;
-import com.linhua.study.config.BeanConfig2;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import com.linhua.study.spring.BeanConfig;
+import com.linhua.study.spring.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
-
-import java.util.Arrays;
 
 
 /**
@@ -21,31 +16,35 @@ import java.util.Arrays;
 
 public class MainTest {
 
-    @Autowired
-    private Car car;
+    public synchronized void demo1(){
+        System.out.println("hello");
+        demo2();
+    }
 
+    public synchronized void demo2(){ //增加重入次数
+        System.out.println("hello2");
+    }
 
     public static void main(String[] args) {
 
-        ApplicationContext applicationContext  = new AnnotationConfigApplicationContext(BeanConfig.class);
 //        ApplicationContext applicationContext  = new AnnotationConfigApplicationContext(BeanConfig.class);
+//        System.out.println("ioc容器加载");
 //        System.out.println(applicationContext.getId());
-//        Object bean = applicationContext.getBean("personBean");
-//        Object bean2 = applicationContext.getBean("car");
-//        AnnotationConfigApplicationContext ApplicationContext2 = new AnnotationConfigApplicationContext(BeanConfig.class);
-//        System.out.println(bean == bean2);
-        System.out.println("ioc容器加载");
+//        Object bean = applicationContext.getBean("person");
+//        System.out.println("Person初始化完成");
+//
+//        Environment environment = applicationContext.getEnvironment();
+//        String property = environment.getProperty("os.name");
+//        System.out.println(property);
 
-        Environment environment = applicationContext.getEnvironment();
-        String property = environment.getProperty("os.name");
-        System.out.println(property);
+        MainTest n = new MainTest();
+        n.demo1();
 
 
 
         //说明两个bean是一样的实例
-        System.out.println(Arrays.toString(applicationContext.getBeanNamesForType(Person.class)));
-//        String[] Type = applicationContext.getBeanNamesForType(Person.class);
-//        System.out.println();
+//        System.out.println(Arrays.toString(applicationContext.getBeanNamesForType(Person.class)));
+
 
 
     }

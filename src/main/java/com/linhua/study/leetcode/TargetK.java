@@ -193,6 +193,7 @@ public class TargetK {
     }
 
 
+    //三数之和为0
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ans = new ArrayList();
         int len = nums.length;
@@ -303,6 +304,77 @@ public class TargetK {
             }
         }
         return ans;
+    }
+
+    //全排列
+    public static List<List<Integer>> permute(int[] nums) {
+        // 首先是特判
+        int len = nums.length;
+        // 使用一个动态数组保存所有可能的全排列
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (len == 0) {
+            return res;
+        }
+
+        boolean[] used = new boolean[len];
+        List<Integer> path = new ArrayList<>();
+
+        dfs(nums, len, 0, path, used, res);
+        return res;
+    }
+
+    private static void dfs(int[] nums, int len, int depth,
+                     List<Integer> path, boolean[] used,
+                     List<List<Integer>> res) {
+        if (depth == len) {
+            // 3、不用拷贝，因为每一层传递下来的 path 变量都是新建的
+            res.add(path);
+            return;
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (!used[i]) {
+                // 1、每一次尝试都创建新的变量表示当前的"状态"
+                List<Integer> newPath = new ArrayList<>(path);
+                newPath.add(nums[i]);
+
+                boolean[] newUsed = new boolean[len];
+                System.arraycopy(used, 0, newUsed, 0, len);
+                newUsed[i] = true;
+
+                dfs(nums, len, depth + 1, newPath, newUsed, res);
+                // 2、无需回溯
+            }
+        }
+    }
+
+    public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+  }
+
+    //重建二叉树
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        if(pre.length == 0 || in.length == 0){
+            return null;
+        }
+        TreeNode root = new TreeNode(pre[0]);
+        for(int i = 0;i < in.length;i++){
+            if(in[i] == pre[0]){
+                root.left = reConstructBinaryTree(Arrays.copyOfRange(pre,1,i+1),Arrays.copyOfRange(in,0,i));
+                root.right = reConstructBinaryTree(Arrays.copyOfRange(pre, i + 1, pre.length), Arrays.copyOfRange(in, i + 1, in.length));
+                break;
+            }
+        }
+        return root;
+    }
+
+    //前序遍历
+    public static void preOrder(TreeNode biTree) {
+
     }
 
     public static void main(String[] args) {
