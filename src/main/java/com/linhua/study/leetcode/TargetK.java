@@ -372,9 +372,134 @@ public class TargetK {
         return root;
     }
 
-    //前序遍历
-    public static void preOrder(TreeNode biTree) {
+    /**
+     * 前序遍历* 递归
+     */
+    public void preOrder(TreeNode node) {
+        if (node != null) {
+            System.out.print(node.val + " ");
+            preOrder(node.left);
+            preOrder(node.right);
+        }
+    }
 
+    //非递归
+    public void preOrder1(TreeNode node) {
+        Stack<TreeNode> stack = new Stack<>();
+        while(node != null || !stack.empty()) {
+            while (node != null){
+                System.out.println(node.val);
+                stack.push(node);
+                node = node.left;
+            }
+            if(!stack.empty()){
+                node = stack.pop();
+                node = node.right;
+            }
+        }
+    }
+
+    /**
+     * 中序遍历* 递归
+     */
+    public void midOrder(TreeNode node) {
+        if (node != null) {
+            midOrder(node.left);
+            System.out.print(node.val + " ");
+            midOrder(node.right);
+        }
+    }
+
+    //中序Morris遍历算法，主要是通过增加右子节点的右节点指向当前节点的父节点。
+    //判断cur节点是否为空
+    //如果不为空
+    //    1）如果cur没有左孩子，cur向右更新，即（cur = cur.right）
+    //    2）如果cur有左孩子，则从左子树找到最右侧节点pre
+    //   如果pre的右孩子为空，则将右孩子指向cur。 pre.right = cur
+    //   如果pre的右孩子为cur，则将其指向为空。pre.right = null。（还原树结构）
+    //   cur为空时，停止遍历
+    public void morris_midOrder(TreeNode node){
+        //设置当前节点做遍历用
+        TreeNode cur = node;
+        while(cur != null){
+            //如果当前节点没有左节点，则直接输出，cur指向右节点
+            if (cur.left == null){
+                System.out.println(cur.val);
+                cur = cur.right;
+            } else {
+                TreeNode pre = cur.left;
+                while (pre.right != null || pre.right != cur){
+                    pre = pre.right;  //走左子树的最右端
+                }
+                if(pre.right == null){	// 第一次到达左子树的最右端
+                    pre.right = cur;
+                    //System.out.print(cur.val);  //前序放这
+                    cur = cur.left;
+                }else{ // 第二次到达左子树的最右端 恢复树结构
+                    pre.right = null;
+                    System.out.print(cur.val);      //中序遍历和前序差不多，主要是打印输出的位置不一样，
+                    cur = cur.right;
+                }
+            }
+        }
+    }
+    /**
+     * 后序遍历 * 递归
+     */
+    public void posOrder(TreeNode node) {
+        if (node != null) {
+            posOrder(node.left);
+            posOrder(node.right);
+            System.out.print(node.val + " ");
+        }
+    }
+    //非递归算法空间复杂度为o(n)
+
+    public void levelOrder(TreeNode node) {
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>(20);
+        //首先将根节点加入栈中
+        queue.add(node);
+        //遍历二叉树
+        while (!queue.isEmpty()) {
+            TreeNode tempNode = queue.poll();
+            System.out.print(tempNode.val + " ");
+
+            if(tempNode.left != null){
+                queue.add(tempNode.left);
+            }
+            if(tempNode.right != null){
+                queue.add(tempNode.right);
+            }
+        }
+    }
+
+     class ListNode {
+         int val;
+         ListNode next;
+         ListNode(int x) {
+             val = x;
+             next = null;
+         }
+      }
+    //获取环的入口节点
+    public ListNode detectCycle(ListNode head) {
+
+        ListNode fast = head;
+        ListNode slow = head;
+        while(true){
+            if(fast == null || fast.next == null){
+                return null;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) break;
+        }
+        fast = head;
+        while(fast != slow){
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return fast;
     }
 
     public static void main(String[] args) {
