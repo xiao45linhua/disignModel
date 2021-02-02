@@ -1,8 +1,6 @@
 package com.linhua.study.bean;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
+import org.apache.dubbo.common.URL;
 
 /**
  * @author linhua
@@ -10,19 +8,13 @@ import org.springframework.stereotype.Component;
  * @date 2020-04-21 3:24 下午
  */
 
-//@Component
-//public class Cat implements BeanPostProcessor {
-//
-//
-//    @Override
-//    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-//        System.out.println("postProcessBeforeInitialization"+bean+beanName);
-//        return bean;
-//    }
-//
-//    @Override
-//    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//        System.out.println("postProcessAfterInitialization"+bean+beanName);
-//        return bean;
-//    }
-//}
+public abstract class Cat  implements Animal{
+
+    @Override
+    public void run() {
+        System.out.println("正常猫这样跑");
+    }
+
+
+
+}

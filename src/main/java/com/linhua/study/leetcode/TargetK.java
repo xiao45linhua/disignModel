@@ -262,7 +262,7 @@ public class TargetK {
         }
         return -1;
     }
-
+//反转链表
     public LinkNode reverserLinkedList3(LinkNode node){
         //指向空，可以想象成位于第一个节点之前
         LinkNode newNode = null;
@@ -285,7 +285,7 @@ public class TargetK {
     }
 
     /**
-     * 容器成最多水含量
+     * 容器成最多水含量 ,前后两个指针去遍历，小的组移动
      * @param height
      * @return
      */
@@ -304,6 +304,43 @@ public class TargetK {
             }
         }
         return ans;
+    }
+
+    //盛最多水
+    public static long maxWater (int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+        int low = 0;
+        long sum = 0;
+        long tmp = 0;
+        //从左向右
+        for (int i = 0; i < arr.length; i++) {
+            //遇到小于它的数就用temp存起来可以临时存放水的空间，直到遇到了大于或者等于它的数就把这个临时空间实现真正存水
+            if (arr[low] > arr[i]) {
+                tmp = tmp + arr[low] - arr[i];
+            }
+            if (arr[low] <= arr[i]) {
+                sum = sum + tmp;
+                tmp = 0;
+                low = i;
+            }
+        }
+        low = arr.length-1;
+        tmp = 0;
+        //从右向左
+        for (int j = arr.length-1; j >= 0; j--) {
+            if (arr[low] > arr[j]) {
+                tmp = tmp + arr[low] - arr[j];
+            }
+            //注意这里不能再 <=，否则可能会重复计算等于的情况
+            if (arr[low] < arr[j]) {
+                sum = sum + tmp;
+                tmp = 0;
+                low = j;
+            }
+        }
+        return sum;
     }
 
     //全排列
@@ -486,6 +523,7 @@ public class TargetK {
 
         ListNode fast = head;
         ListNode slow = head;
+        //先找到相遇点，之后把快节点放在头，一块走，相遇的位置就是入口点
         while(true){
             if(fast == null || fast.next == null){
                 return null;
@@ -502,9 +540,63 @@ public class TargetK {
         return fast;
     }
 
-    public static void main(String[] args) {
+    //快速排序思想+二分查找寻找第k大元素
+    public int findKth(int[] a, int n, int K) {
+        // write code here
+        return findK(a, 0, n-1, K);
+    }
 
-        System.out.println(lengthOfLongestSubstring("abcdabdd"));
+    public static int partition(int[] arr, int left, int right) {
+        int pivot = arr[left];
+
+        while (left < right) {
+            while (left < right && arr[right] <= pivot) {
+                right--;
+            }
+            arr[left] = arr[right];
+            while (left < right && arr[left] >= pivot) {
+                left++;
+            }
+            arr[right] = arr[left];
+        }
+        arr[left] = pivot;
+        return left;
+    }
+    public static int findK(int[] arr, int left, int right, int k) {
+        if (left <= right) {
+            int pivot = partition(arr, left, right);
+
+            if (pivot == k - 1) {
+                return arr[pivot];
+            } else if (pivot < k - 1) {
+                return findK(arr, pivot + 1, right, k);
+            } else {
+                return findK(arr, left, pivot - 1, k);
+            }
+        }
+        return -1;
+    }
+
+
+    //给定一个数组arr，返回子数组的最大累加和
+    public int maxsumofSubarray (int[] arr) {
+        // write code here
+        if(arr.length == 0)
+            return 0;
+        int sum = arr[0];
+        int max = sum;
+        for(int i = 1;i < arr.length;i++){
+            sum = sum > 0 ? sum + arr[i] : arr[i];
+            max = Math.max(max,sum);
+        }
+        return max;
+    }
+
+
+    public static void main(String[] args) {
+        int a[] = {3,1,2,5,2,4};
+
+        System.out.println(maxWater(a));
 
         System.out.println("xiaolinhua".hashCode());
     }

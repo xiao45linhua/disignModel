@@ -1,11 +1,16 @@
 package com.linhua.study;
 
+import com.linhua.study.bean.Cat;
 import com.linhua.study.spring.BeanConfig;
 import com.linhua.study.spring.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -40,12 +45,19 @@ public class MainTest {
         MainTest n = new MainTest();
         n.demo1();
 
-
-
+        Cat cat = new Cat() {
+            @Override
+            public void run() {
+                super.run();
+                System.out.println("111111111111111111111");
+            }
+        };
+        cat.run();
         //说明两个bean是一样的实例
 //        System.out.println(Arrays.toString(applicationContext.getBeanNamesForType(Person.class)));
 
-
+        Map mpa = new ConcurrentHashMap<>();
+        HashMap map = new HashMap();
 
     }
 }
