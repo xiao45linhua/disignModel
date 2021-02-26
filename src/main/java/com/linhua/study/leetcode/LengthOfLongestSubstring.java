@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @apiNote
+ * @apiNote 最长不重复子序列
  * @author bjhl
  */
 public class LengthOfLongestSubstring {
-
     public static String getLongestSubstring(String str){
         if (str == null || "".equals(str)){
             return "";
@@ -27,7 +26,7 @@ public class LengthOfLongestSubstring {
         }
         return null;
     }
-    //最长不重复子序列
+    //最长不重复子序列长度
     public static int lengthOfLongestSubstring(String s) {
         int n = s.length(), ans = 0;
         Map<Character, Integer> map = new HashMap<>();

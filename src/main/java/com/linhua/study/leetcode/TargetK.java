@@ -64,8 +64,7 @@ public class TargetK {
         return dumNode.next;
     }
 
-    //求两个数相加目标值为k的两个数下标
-
+    //求两个数相加目标值为k的两个数下标 1,2,3三个数，目标为4，则第一次存入进去的是kv为3-1
     public int[] twoSum(int[] nums, int target) {
         int[] indexs = new int[2];
         Map<Integer,Integer> hash = new HashMap<Integer,Integer>();
@@ -80,44 +79,48 @@ public class TargetK {
         }
         return indexs;
     }
-
+    private int[] twosum(int[] nums,int target){
+        int result[] = new int[2];
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i = 0;i < nums.length;i++){
+            if (map.containsKey(nums[i])){
+                result[0] = 0;
+                result[1] = map.get(nums[i]);
+                return result;
+            }
+            map.put(target-nums[i],i);
+        }
+        return result;
+    }
+    //最长不重复子序列长度
     public static int lengthOfLongestSubstring(String s) {
-        // 哈希集合，记录每个字符是否出现过
-        Set<Character> occ = new HashSet<Character>();
-        int n = s.length();
-        // 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
-        int rk = -1, ans = 0;
-        for (int i = 0; i < n; ++i) {
-            if (i != 0) {
-                // 左指针向右移动一格，移除一个字符
-                occ.remove(s.charAt(i - 1));
+        int n = s.length(), ans = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int end = 0, start = 0; end < n; end++) {
+            char alpha = s.charAt(end);
+            //找到了一个重复的，就把开始的位置和重复的位置做对比，然后就重新定位开始的位置，因为重复了，所以之前的可以直接放弃掉，重新开始弄长度
+            if (map.containsKey(alpha)) {
+                start = Math.max(map.get(alpha), start);
             }
-            while (rk + 1 < n && !occ.contains(s.charAt(rk + 1))) {
-                // 不断地移动右指针
-                occ.add(s.charAt(rk + 1));
-                ++rk;
-            }
-            // 第 i 到 rk 个字符是一个极长的无重复字符子串
-            ans = Math.max(ans, rk - i + 1);
+            ans = Math.max(ans, end - start + 1);
+            //记录是第几个数，方便直接放弃掉之前的数
+            map.put(s.charAt(end), end + 1);
         }
         return ans;
     }
 
-
+    //最长回文子串
     public String longestPalindrome(String s) {
         // 特判
         int len = s.length();
         if (len < 2) {
             return s;
         }
-
         int maxLen = 1;
         int begin = 0;
-
         // dp[i][j] 表示 s[i, j] 是否是回文串
         boolean[][] dp = new boolean[len][len];
         char[] charArray = s.toCharArray();
-
         for (int i = 0; i < len; i++) {
             dp[i][i] = true;
         }
@@ -133,7 +136,6 @@ public class TargetK {
                         dp[i][j] = dp[i + 1][j - 1];
                     }
                 }
-
                 // 只要 dp[i][j] == true 成立，就表示子串 s[i..j] 是回文，此时记录回文长度和起始位置
                 if (dp[i][j] && j - i + 1 > maxLen) {
                     maxLen = j - i + 1;
@@ -144,7 +146,9 @@ public class TargetK {
         return s.substring(begin, begin + maxLen);
     }
 
-
+    /**
+     * 快排
+     */
     public static void quickSort(int[] num,int left, int right){
         if (right - left <= 1){
             return;
@@ -154,24 +158,24 @@ public class TargetK {
         //数组中比key小的放在左边，比key大的放在右边，key值下标为i
         int i=left;
         int j=right;
-        while (i < j){
-            while(num[j] > key && i<j ){
+        while (i < j) {
+            while (num[j] > key && i < j) {
                 j--;
             }
-            while (num[i] < key && i <j){
+            while (num[i] < key && i < j) {
                 i++;
             }
             //i和j指向的元素交换
-            if(i<j){
-                int temp=num[i];
-                num[i]=num[j];
-                num[j]=temp;
+            if (i < j) {
+                int temp = num[i];
+                num[i] = num[j];
+                num[j] = temp;
             }
-            num[left]=num[i];
-            num[i]=key;
-            quickSort(num,left,i-1);
-            quickSort(num,i+1,right);
         }
+        num[left]=num[i];
+        num[i]=key;
+        quickSort(num,left,i-1);
+        quickSort(num,i+1,right);
 
     }
 
@@ -232,8 +236,7 @@ public class TargetK {
         while(q < nums.length){
             if(nums[p] != nums[q]){
                 if(q - p > 1){
-                    nums[p + 1] = nums[q];
-                }
+                    nums[p + 1] = nums[q]; }
                 p++;
             }
             q++;
@@ -268,9 +271,7 @@ public class TargetK {
         LinkNode newNode = null;
         //指向第一个节点
         LinkNode curNode = node;
-
         //循环中，使用第三变量事先保存curNode的后面一个节点
-
         while (curNode != null){
             LinkNode tempNode = curNode.next;
             //把curNode反向往前指
@@ -349,14 +350,11 @@ public class TargetK {
         int len = nums.length;
         // 使用一个动态数组保存所有可能的全排列
         List<List<Integer>> res = new ArrayList<>();
-
         if (len == 0) {
             return res;
         }
-
         boolean[] used = new boolean[len];
         List<Integer> path = new ArrayList<>();
-
         dfs(nums, len, 0, path, used, res);
         return res;
     }
@@ -369,17 +367,14 @@ public class TargetK {
             res.add(path);
             return;
         }
-
         for (int i = 0; i < len; i++) {
             if (!used[i]) {
                 // 1、每一次尝试都创建新的变量表示当前的"状态"
                 List<Integer> newPath = new ArrayList<>(path);
                 newPath.add(nums[i]);
-
                 boolean[] newUsed = new boolean[len];
                 System.arraycopy(used, 0, newUsed, 0, len);
                 newUsed[i] = true;
-
                 dfs(nums, len, depth + 1, newPath, newUsed, res);
                 // 2、无需回溯
             }
@@ -592,13 +587,326 @@ public class TargetK {
         return max;
     }
 
+// 最小k个数
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if (input == null || input.length == 0 || k > input.length || k == 0)
+            return list;
+        int[] arr = new int[k + 1];//数组下标0的位置作为哨兵，不存储数据
+        //初始化数组
+        for (int i = 1; i < k + 1; i++)
+            arr[i] = input[i - 1];
+        buildMaxHeap(arr, k + 1);//构造大根堆
+        for (int i = k; i < input.length; i++) {
+            if (input[i] < arr[1]) {
+                arr[1] = input[i];
+                adjustDown(arr, 1, k + 1);//将改变了根节点的二叉树继续调整为大根堆
+            }
+        }
+        for (int i = 1; i < arr.length; i++) {
+            list.add(arr[i]);
+        }
+        return list;
+    }
+    /**
+     * @Author: ZwZ
+     * @Description: 构造大根堆
+     * @Param: [arr, length]  length:数组长度 作为是否跳出循环的条件
+     * @return: void
+     * @Date: 2020/1/30-22:06
+     */
+    public void buildMaxHeap(int[] arr, int length) {
+        if (arr == null || arr.length == 0 || arr.length == 1)
+            return;
+        for (int i = (length - 1) / 2; i > 0; i--) {
+            adjustDown(arr, i, arr.length);
+        }
+    }
+    /**
+     * @Author: ZwZ
+     * @Description: 堆排序中对一个子二叉树进行堆排序
+     * @Param: [arr, k, length]
+     * @return:
+     * @Date: 2020/1/30-21:55
+     */
+    public void adjustDown(int[] arr, int k, int length) {
+        arr[0] = arr[k];//哨兵
+        for (int i = 2 * k; i <= length; i *= 2) {
+            if (i < length - 1 && arr[i] < arr[i + 1])
+                i++;//取k较大的子结点的下标
+            if (i > length - 1 || arr[0] >= arr[i])
+                break;
+            else {
+                arr[k] = arr[i];
+                k = i; //向下筛选
+            }
+        }
+        arr[k] = arr[0];
+    }
+}
+//给定一个整数数组，找出两个下标，要求后面下标所指的数减去前面下标所指的数之差最大
+    public static int[] fun(int a[]){
+        int b[]=new int[2];
+        if(a==null || a.length<2){
+            b[0]=0;
+            b[1]=0;
+            return b;
+        }
+        b[0]=0;
+        int cha=b[1]-b[0];
+        int temp = a[0];
+        for(int i=1;i<a.length;i++){
+            if(a[i]<a[temp])
+                temp = i;
+            if((a[i]-a[temp])>cha){
+                b[1]=i;
+                b[0] = temp;
+                cha=a[i]-a[b[0]];
+            }
+        }
+        return b;
+    }
+
+    //z遍历
+    public ArrayList<ArrayList<Integer>> zigzagLevelOrder (TreeNode root) {
+        // write code here
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        if(root!=null){
+            queue.add(root);
+        }
+        while(!queue.isEmpty()){
+            ArrayList<Integer> tmp = new ArrayList<>();     //存储每一层节点
+            for(int i= queue.size();i>0;i--){               //遍历当前层的节点
+                TreeNode node = queue.poll();               //弹出队列中的节点
+                if((res.size()+1)%2!=0){     //res.size()+1：当前的层数，从1开始
+                    tmp.add(node.val);       // 奇数层 -> 尾插
+                }else{
+                    tmp.add(0,node.val);     // 偶数层 -> 头插
+                }
+                if(node.left!=null){         //如果左子节点不为空，则将其加入到队列中
+                    queue.add(node.left);
+                }
+                if(node.right!=null){         //如果左子节点不为空，则将其加入到队列中
+                    queue.add(node.right);
+                }
+            }
+            res.add(tmp);               //将这一层的节点加入到res中
+        }
+        return res;
+    }
+    //最长公共子序列
+    public String LCS (String str1, String str2) {
+        // write code here
+        if (str1 == null || str2 == null) return "-1";
+        int m = str1.length(), n = str2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        if (m == 0 || n == 0) return "-1";
+        int maxLen = 0, x = 0;
+        for (int i = 0; i < m; i++) {
+            char c1 = str1.charAt(i);
+            for (int j = 0; j < n; j++) {
+                // 获取两个串字符
+                char c2 = str2.charAt(j);
+                if (c1 == c2) {
+                    // 去找它们前面各退一格的值加1即可
+                    dp[i + 1][j + 1] = dp[i][j] + 1;
+                    if (dp[i + 1][j + 1] > maxLen) {
+                        maxLen = dp[i + 1][j + 1];
+                        x = i + 1;
+                    }
+                }
+            }
+        }
+        return maxLen == 0 ? "-1" : str1.substring(x - maxLen, x);
+    }
+
+    //公共祖先 ，其实就是递归查找自节点的过程，在递归退出时候，返回公共祖先
+    public int lowestCommonAncestor (TreeNode root, int o1, int o2) {
+        return CommonAncestor(root, o1, o2).val;
+    }
+    public TreeNode CommonAncestor (TreeNode root, int o1, int o2) {
+        if (root == null || root.val == o1 || root.val == o2) { // 超过叶子节点，或者root为p、q中的一个直接返回
+            return root;
+        }
+        TreeNode left = CommonAncestor(root.left,o1,o2); // 返回左侧的p\q节点 其实就是递归查找节点值的过程
+        TreeNode right = CommonAncestor(root.right,o1,o2); // 返回右侧的p\q节点
+        if (left == null) {  // 都在右侧
+            return right;
+        }
+        if (right == null) { // 都在左侧
+            return left;
+        }
+        return root; // 在左右两侧
+    }
+    //两个链表公共节点
+    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+        if(pHead1 == null || pHead2 == null)return null;
+        ListNode p1 = pHead1;
+        ListNode p2 = pHead2;
+        while(p1!=p2){
+            p1 = p1.next;
+            p2 = p2.next;
+            //但是，a+b == b+a 因此，可以让a+b作为链表A的新长度，b+a作为链表B的新长度。
+            if(p1 != p2){
+                if(p1 == null)p1 = pHead2;
+                if(p2 == null)p2 = pHead1;
+            }
+        }
+        return p1;
+    }
+
+    /**
+     *
+     题号	题解
+     121. 买卖股票的最佳时机	暴力解法、动态规划（Java）
+     122. 买卖股票的最佳时机 II	暴力搜索、贪心算法、动态规划（Java）
+     123. 买卖股票的最佳时机 III	动态规划（Java）
+     188. 买卖股票的最佳时机 IV	动态规划（「力扣」更新过用例，只有优化空间的版本可以 AC）
+     309. 最佳买卖股票时机含冷冻期	动态规划（Java）
+     714. 买卖股票的最佳时机含手续费	动态规划（Java）
+     * @param args
+     */
+
+    /**
+     * 一次股票买卖机会
+     * @param
+     */
+    public static int getMaxProfit(int[] prices){
+        int len = prices.length;
+        if (len < 2){
+            return 0;
+        }
+        int[] f = new int[2];
+        f[0] = 0;  //表示当前未持有股票
+        f[1] = -prices[0];  //表示当前未持有股票 初始值为已经买了
+        for (int i =1; i< len;i++){
+            f[0] = Math.max(f[0],prices[i] + f[1]);
+            f[1] = Math.max(f[1],-prices[i]);
+        }
+        return f[0];
+    }
+
+    /**
+     *  1.确定最终状态 2.确定初始值 3:状态方程
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+        int dp0 = 0;                    // 一直不买
+        int dp1 = - prices[0];          // 只买了一次
+        int dp2 = Integer.MIN_VALUE;    // 买了一次，卖了一次
+
+        for(int i = 1; i < prices.length; i++){
+            dp1 = Math.max(dp1, dp0 - prices[i]);
+            dp2 = Math.max(dp2, dp1 + prices[i]);
+        }
+        return Math.max(dp0, dp2);
+    }
+
+
+    /**
+     * 多次股票买卖机会,必须买-卖-买
+     * @param
+     */
+    public static int getMaxProfit2(int[] prices){
+        int len = prices.length;
+        if (len < 2){
+            return 0;
+        }
+        int[] f = new int[2];
+        f[0] = 0;  //表示未持有股票状态
+        int preCash = 0; //之前的现金
+        f[1] = -prices[0];  //表示当前未持有股票 初始值为已经买了
+        int preHold = f[1];
+        for (int i =1; i< len;i++){
+            f[0] = Math.max(preCash,prices[i] + preHold);
+            f[1] = Math.max(preHold,preCash - prices[i]);
+            preCash =  f[0];
+            preHold = f[1];
+        }
+        return f[0];
+    }
+
+    /**
+     * 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
+     *
+     * 设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
+     * @param prices
+     * @return
+     */
+    public int maxProfit3(int[] prices) {
+        if(prices.length < 2) return 0;
+
+        int dp0 = 0;                 // 一直不买
+        int dp1 = - prices[0];       // 到最后也只买入了一笔
+        int dp2 = Integer.MIN_VALUE; // 到最后买入一笔，卖出一笔
+        int dp3 = Integer.MIN_VALUE; // 到最后买入两笔，卖出一笔
+        int dp4 = Integer.MIN_VALUE; // 到最后买入两笔，卖出两笔
+
+        for(int i = 1; i < prices.length; i++){
+            dp1 = Math.max(dp1, dp0 - prices[i]);
+            dp2 = Math.max(dp2, dp1 + prices[i]);
+            dp3 = Math.max(dp3, dp2 - prices[i]);
+            dp4 = Math.max(dp4, dp3 + prices[i]);
+        }
+        return Math.max(dp2, dp4);
+    }
+
+//NC38螺旋矩阵Java题解
+    public ArrayList<Integer> spiralOrder(int[][] matrix) {
+    ArrayList<Integer> res = new ArrayList<>();
+    //matrix.length==0判断如果是一维矩阵，那么matrix[0]就会报错。
+    if(matrix.length==0) return res;
+    int col = matrix[0].length-1;
+    int row = matrix.length-1;
+    //起始点是col/2和row/2的最小值
+    for(int i=0;i<=Math.min(col/2,row/2);i++){
+        ArrayList<Integer> list = getList(i,matrix,col,row);
+        res.addAll(list);
+    }
+    return res;
+}
+    //从某个点开始的螺旋结果
+    public static ArrayList<Integer> getList(int i, int[][] matrix,int col,int row) {
+        //（i,i） (i,col-i)   (row-i,col-i)  (row-i,i)
+        ArrayList<Integer> list =new ArrayList<>();
+        //对于特殊情况的判断 只有一个点
+        if(row-i==i && col-i==i){
+            list.add(matrix[i][i]);
+            return list;
+        }
+        for (int c=i;c<=col-i;c++){
+            list.add(matrix[i][c]);
+        }
+        for (int r=i+1;r<=row-i;r++){
+            list.add(matrix[r][col-i]);
+        }
+        //此时只有一行
+        if(row-i!=i){//去重
+            for(int c=col-i-1;c>=i;c--){
+                list.add(matrix[row-i][c]);
+            }
+        }
+        //此时只有一列
+        if(col-i!=i) {//去重
+            for (int r = row - i-1; r > i; r--) {
+                list.add(matrix[r][i]);
+            }
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
-        int a[] = {3,1,2,5,2,4};
-
-        System.out.println(maxWater(a));
-
-        System.out.println("xiaolinhua".hashCode());
+        int a[] = {3,1,2,6,0,4,7};
+        String b = "accdabcd";
+        System.out.println(lengthOfLongestSubstring(b));
+//
+//        System.out.println(maxWater(a));
+//
+//        System.out.println("xiaolinhua".hashCode());
     }
 
 }
